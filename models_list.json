@@ -1,0 +1,71 @@
+﻿{
+    "data":  [
+                 {
+                     "created":  1770350769,
+                     "id":  "gemini-claude-sonnet-4-5-thinking",
+                     "object":  "model",
+                     "owned_by":  "antigravity"
+                 },
+                 {
+                     "created":  1750118400,
+                     "id":  "gemini-2.5-pro",
+                     "object":  "model",
+                     "owned_by":  "google"
+                 },
+                 {
+                     "created":  1770350769,
+                     "id":  "gemini-3-flash-preview",
+                     "object":  "model",
+                     "owned_by":  "antigravity"
+                 },
+                 {
+                     "created":  1770350769,
+                     "id":  "gemini-claude-opus-4-5-thinking",
+                     "object":  "model",
+                     "owned_by":  "antigravity"
+                 },
+                 {
+                     "created":  1770350769,
+                     "id":  "gpt-oss-120b-medium",
+                     "object":  "model",
+                     "owned_by":  "antigravity"
+                 },
+                 {
+                     "created":  1770350769,
+                     "id":  "tab_flash_lite_preview",
+                     "object":  "model",
+                     "owned_by":  "antigravity"
+                 },
+                 {
+                     "created":  1770350769,
+                     "id":  "gemini-3-pro-image-preview",
+                     "object":  "model",
+                     "owned_by":  "antigravity"
+                 },
+                 {
+                     "created":  1770350769,
+                     "id":  "gemini-2.5-flash",
+                     "object":  "model",
+                     "owned_by":  "antigravity"
+                 },
+                 {
+                     "created":  1770350769,
+                     "id":  "gemini-2.5-flash-lite",
+                     "object":  "model",
+                     "owned_by":  "antigravity"
+                 },
+                 {
+                     "created":  1770350769,
+                     "id":  "gemini-3-pro-preview",
+                     "object":  "model",
+                     "owned_by":  "antigravity"
+                 },
+                 {
+                     "created":  1770350769,
+                     "id":  "gemini-claude-sonnet-4-5",
+                     "object":  "model",
+                     "owned_by":  "antigravity"
+                 }
+             ],
+    "object":  "list"
+}
