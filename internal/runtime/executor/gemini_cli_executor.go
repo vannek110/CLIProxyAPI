@@ -704,7 +704,7 @@ func geminiOAuthMetadata(auth *cliproxyauth.Auth) map[string]any {
 	return auth.Metadata
 }
 
-func newHTTPClient(ctx context.Context, cfg *config.Config, auth *cliproxyauth.Auth, timeout time.Duration) *http.Client {
+func newHTTPClient(ctx context.Context, cfg *projConfig.Config, auth *cliproxyauth.Auth, timeout time.Duration) *http.Client {
 	return newProxyAwareHTTPClient(ctx, cfg, auth, timeout)
 }
 
