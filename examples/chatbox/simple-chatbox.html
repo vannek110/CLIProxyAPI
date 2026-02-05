@@ -119,7 +119,7 @@
         // CẤU HÌNH - THAY ĐỔI Ở ĐÂY
         // ===================================
         const CONFIG = {
-            apiUrl: 'https://srv-d62o8g94tr6s73fj1jug.onrender.com/v1/chat/completions',
+            apiUrl: 'https://cliproxyapi-zgon.onrender.com/v1/chat/completions',
             apiKey: 'your-api-key-1',
             model: 'gemini-2.5-flash',
             useStreaming: true,  // true = hiển thị từng chữ, false = hiển thị cả câu
@@ -203,6 +203,19 @@
                         ...(CONFIG.useGrounding && { tools: [{ google_search: {} }] })
                     })
                 });
+
+                if (!response.ok) {
+                    let errorMsg = `Lỗi ${response.status}: ${response.statusText}`;
+                    try {
+                        const errorData = await response.json();
+                        if (errorData.error) errorMsg = errorData.error;
+                    } catch (e) { }
+
+                    if (response.status === 502 || response.status === 503) {
+                        errorMsg += "\n(Server đang khởi động hoặc quá tải, vui lòng thử lại sau 30s)";
+                    }
+                    throw new Error(errorMsg);
+                }
 
                 const reader = response.body.getReader();
                 const decoder = new TextDecoder();

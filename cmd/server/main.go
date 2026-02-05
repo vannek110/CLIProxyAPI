@@ -389,7 +389,11 @@ func main() {
 	if portStr, ok := lookupEnv("PORT"); ok {
 		if p, parseErr := strconv.Atoi(portStr); parseErr == nil {
 			cfg.Port = p
-			log.Infof("overriding port from environment variable: %d", cfg.Port)
+			// Explicitly bind to 0.0.0.0 to ensure Render's load balancer can connect
+			if cfg.Host == "" || cfg.Host == "localhost" || cfg.Host == "127.0.0.1" {
+				cfg.Host = "0.0.0.0"
+			}
+			log.Infof("overriding configuration from environment: host=%s, port=%d", cfg.Host, cfg.Port)
 		}
 	}
 

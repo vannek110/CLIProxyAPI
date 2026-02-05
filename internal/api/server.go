@@ -296,8 +296,12 @@ func NewServer(cfg *config.Config, authManager *auth.Manager, accessManager *sdk
 	}
 
 	// Create HTTP server
+	host := cfg.Host
+	if host == "" {
+		host = "0.0.0.0"
+	}
 	s.server = &http.Server{
-		Addr:    fmt.Sprintf("%s:%d", cfg.Host, cfg.Port),
+		Addr:    fmt.Sprintf("%s:%d", host, cfg.Port),
 		Handler: engine,
 	}
 

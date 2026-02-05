@@ -28,8 +28,11 @@ WORKDIR /CLIProxyAPI
 EXPOSE 8317
 
 ENV TZ=Asia/Shanghai
-RUN apk add --no-cache tzdata && \
+RUN apk add --no-cache tzdata ca-certificates && \
     cp /usr/share/zoneinfo/${TZ} /etc/localtime && \
     echo "${TZ}" > /etc/timezone
+
+HEALTHCHECK --interval=30s --timeout=3s \
+    CMD wget --no-verbose --tries=1 --spider http://localhost:${PORT:-8317}/ || exit 1
 
 CMD ["./CLIProxyAPI"]
