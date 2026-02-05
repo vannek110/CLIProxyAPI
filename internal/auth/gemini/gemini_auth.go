@@ -157,8 +157,8 @@ func (g *GeminiAuth) GetAuthenticatedClient(ctx context.Context, ts *GeminiToken
 // Returns:
 //   - *GeminiTokenStorage: A new token storage object with user information
 //   - error: An error if the token storage creation fails, nil otherwise
-func (g *GeminiAuth) createTokenStorage(ctx context.Context, config *oauth2.Config, token *oauth2.Token, projectID string) (*GeminiTokenStorage, error) {
-	httpClient := config.Client(ctx, token)
+func (g *GeminiAuth) createTokenStorage(ctx context.Context, conf *oauth2.Config, token *oauth2.Token, projectID string) (*GeminiTokenStorage, error) {
+	httpClient := conf.Client(ctx, token)
 	req, err := http.NewRequestWithContext(ctx, "GET", "https://www.googleapis.com/oauth2/v1/userinfo?alt=json", nil)
 	if err != nil {
 		return nil, fmt.Errorf("could not get user info: %v", err)
@@ -223,7 +223,7 @@ func (g *GeminiAuth) createTokenStorage(ctx context.Context, config *oauth2.Conf
 // Returns:
 //   - *oauth2.Token: The OAuth2 token obtained from the authorization flow
 //   - error: An error if the token acquisition fails, nil otherwise
-func (g *GeminiAuth) getTokenFromWeb(ctx context.Context, config *oauth2.Config, opts *WebLoginOptions) (*oauth2.Token, error) {
+func (g *GeminiAuth) getTokenFromWeb(ctx context.Context, conf *oauth2.Config, opts *WebLoginOptions) (*oauth2.Token, error) {
 	callbackPort := DefaultCallbackPort
 	if opts != nil && opts.CallbackPort > 0 {
 		callbackPort = opts.CallbackPort
@@ -237,7 +237,7 @@ func (g *GeminiAuth) getTokenFromWeb(ctx context.Context, config *oauth2.Config,
 	// Create a new HTTP server with its own multiplexer.
 	mux := http.NewServeMux()
 	server := &http.Server{Addr: fmt.Sprintf(":%d", callbackPort), Handler: mux}
-	config.RedirectURL = callbackURL
+	conf.RedirectURL = callbackURL
 
 	mux.HandleFunc("/oauth2callback", func(w http.ResponseWriter, r *http.Request) {
 		if err := r.URL.Query().Get("error"); err != "" {
@@ -276,7 +276,7 @@ func (g *GeminiAuth) getTokenFromWeb(ctx context.Context, config *oauth2.Config,
 	}()
 
 	// Open the authorization URL in the user's browser.
-	authURL := config.AuthCodeURL("state-token", oauth2.AccessTypeOffline, oauth2.SetAuthURLParam("prompt", "consent"))
+	authURL := conf.AuthCodeURL("state-token", oauth2.AccessTypeOffline, oauth2.SetAuthURLParam("prompt", "consent"))
 
 	noBrowser := false
 	if opts != nil {
@@ -376,7 +376,7 @@ waitForCallback:
 	}
 
 	// Exchange the authorization code for a token.
-	token, err := config.Exchange(ctx, authCode)
+	token, err := conf.Exchange(ctx, authCode)
 	if err != nil {
 		return nil, fmt.Errorf("failed to exchange token: %w", err)
 	}

@@ -119,10 +119,11 @@
         // CẤU HÌNH - THAY ĐỔI Ở ĐÂY
         // ===================================
         const CONFIG = {
-            apiUrl: 'http://localhost:8317/v1/chat/completions',
+            apiUrl: 'https://srv-d62o8g94tr6s73fj1jug.onrender.com/v1/chat/completions',
             apiKey: 'your-api-key-1',
-            model: 'gemini-3-flash-preview',
-            useStreaming: true  // true = hiển thị từng chữ, false = hiển thị cả câu
+            model: 'gemini-2.5-flash',
+            useStreaming: true,  // true = hiển thị từng chữ, false = hiển thị cả câu
+            useGrounding: true   // true = bật Google Search grounding (truy cập thông tin thời gian thực)
         };
 
         // ===================================
@@ -162,7 +163,8 @@
                     body: JSON.stringify({
                         model: CONFIG.model,
                         messages: conversationHistory,
-                        stream: false
+                        stream: false,
+                        ...(CONFIG.useGrounding && { tools: [{ google_search: {} }] })
                     })
                 });
 
@@ -197,7 +199,8 @@
                     body: JSON.stringify({
                         model: CONFIG.model,
                         messages: conversationHistory,
-                        stream: true
+                        stream: true,
+                        ...(CONFIG.useGrounding && { tools: [{ google_search: {} }] })
                     })
                 });
 
