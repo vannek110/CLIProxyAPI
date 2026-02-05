@@ -17,7 +17,7 @@ import (
 
 	"github.com/router-for-me/CLIProxyAPI/v6/internal/auth/codex"
 	"github.com/router-for-me/CLIProxyAPI/v6/internal/browser"
-	"github.com/router-for-me/CLIProxyAPI/v6/internal/config"
+	projConfig "github.com/router-for-me/CLIProxyAPI/v6/internal/config"
 	"github.com/router-for-me/CLIProxyAPI/v6/internal/misc"
 	"github.com/router-for-me/CLIProxyAPI/v6/internal/util"
 	log "github.com/sirupsen/logrus"
@@ -71,7 +71,7 @@ func NewGeminiAuth() *GeminiAuth {
 // Returns:
 //   - *http.Client: An HTTP client configured with authentication
 //   - error: An error if the client configuration fails, nil otherwise
-func (g *GeminiAuth) GetAuthenticatedClient(ctx context.Context, ts *GeminiTokenStorage, cfg *config.Config, opts *WebLoginOptions) (*http.Client, error) {
+func (g *GeminiAuth) GetAuthenticatedClient(ctx context.Context, ts *GeminiTokenStorage, cfg *projConfig.Config, opts *WebLoginOptions) (*http.Client, error) {
 	callbackPort := DefaultCallbackPort
 	if opts != nil && opts.CallbackPort > 0 {
 		callbackPort = opts.CallbackPort
@@ -110,8 +110,8 @@ func (g *GeminiAuth) GetAuthenticatedClient(ctx context.Context, ts *GeminiToken
 
 	// Configure the OAuth2 client.
 	conf := &oauth2.Config{
-		ClientID:     config.GetOAuthConfig().GetGeminiClientID(),
-		ClientSecret: config.GetOAuthConfig().GetGeminiClientSecret(),
+		ClientID:     projConfig.GetOAuthConfig().GetGeminiClientID(),
+		ClientSecret: projConfig.GetOAuthConfig().GetGeminiClientSecret(),
 		RedirectURL:  callbackURL, // This will be used by the local server.
 		Scopes:       Scopes,
 		Endpoint:     google.Endpoint,
@@ -196,8 +196,8 @@ func (g *GeminiAuth) createTokenStorage(ctx context.Context, conf *oauth2.Config
 	}
 
 	ifToken["token_uri"] = "https://oauth2.googleapis.com/token"
-	ifToken["client_id"] = config.GetOAuthConfig().GetGeminiClientID()
-	ifToken["client_secret"] = config.GetOAuthConfig().GetGeminiClientSecret()
+	ifToken["client_id"] = projConfig.GetOAuthConfig().GetGeminiClientID()
+	ifToken["client_secret"] = projConfig.GetOAuthConfig().GetGeminiClientSecret()
 	ifToken["scopes"] = Scopes
 	ifToken["universe_domain"] = "googleapis.com"
 

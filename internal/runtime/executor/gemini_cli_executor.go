@@ -17,7 +17,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/router-for-me/CLIProxyAPI/v6/internal/config"
+	projConfig "github.com/router-for-me/CLIProxyAPI/v6/internal/config"
 	"github.com/router-for-me/CLIProxyAPI/v6/internal/misc"
 	"github.com/router-for-me/CLIProxyAPI/v6/internal/runtime/geminicli"
 	"github.com/router-for-me/CLIProxyAPI/v6/internal/thinking"
@@ -45,7 +45,7 @@ var geminiOAuthScopes = []string{
 
 // GeminiCLIExecutor talks to the Cloud Code Assist endpoint using OAuth credentials from auth metadata.
 type GeminiCLIExecutor struct {
-	cfg *config.Config
+	cfg *projConfig.Config
 }
 
 // NewGeminiCLIExecutor creates a new Gemini CLI executor instance.
@@ -55,7 +55,7 @@ type GeminiCLIExecutor struct {
 //
 // Returns:
 //   - *GeminiCLIExecutor: A new Gemini CLI executor instance
-func NewGeminiCLIExecutor(cfg *config.Config) *GeminiCLIExecutor {
+func NewGeminiCLIExecutor(cfg *projConfig.Config) *GeminiCLIExecutor {
 	return &GeminiCLIExecutor{cfg: cfg}
 }
 
@@ -564,7 +564,7 @@ func (e *GeminiCLIExecutor) Refresh(_ context.Context, auth *cliproxyauth.Auth) 
 	return auth, nil
 }
 
-func prepareGeminiCLITokenSource(ctx context.Context, cfg *config.Config, auth *cliproxyauth.Auth) (oauth2.TokenSource, map[string]any, error) {
+func prepareGeminiCLITokenSource(ctx context.Context, cfg *projConfig.Config, auth *cliproxyauth.Auth) (oauth2.TokenSource, map[string]any, error) {
 	metadata := geminiOAuthMetadata(auth)
 	if auth == nil || metadata == nil {
 		return nil, nil, fmt.Errorf("gemini-cli auth metadata missing")
@@ -602,8 +602,8 @@ func prepareGeminiCLITokenSource(ctx context.Context, cfg *config.Config, auth *
 	}
 
 	conf := &oauth2.Config{
-		ClientID:     config.GetOAuthConfig().GetGeminiClientID(),
-		ClientSecret: config.GetOAuthConfig().GetGeminiClientSecret(),
+		ClientID:     projConfig.GetOAuthConfig().GetGeminiClientID(),
+		ClientSecret: projConfig.GetOAuthConfig().GetGeminiClientSecret(),
 		Scopes:       geminiOAuthScopes,
 		Endpoint:     google.Endpoint,
 	}
